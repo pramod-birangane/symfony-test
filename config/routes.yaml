@@ -1,0 +1,30 @@
+register:
+    path: /register
+    controller: App\Controller\AuthController::register
+    methods: POST
+
+login_check:
+    path:     /login_check
+    methods:  [POST]
+
+list_teams:
+    path: /api/{leagueId}
+    controller: App\Controller\AuthController::api
+    methods: GET
+    requirements:
+        leagueId: '\d+'
+
+delete_league:
+    path: /api/{leagueId}
+    controller: App\Controller\AuthController::api
+    methods: DELETE
+    requirements:
+      leagueId: '\d+'
+
+forbidden:
+  path: /
+  controller: App\Controller\AuthController::forbidden
+
+#forbidden1:
+#  path: /api
+#  controller: App\Controller\AuthController::forbidden
