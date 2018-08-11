@@ -9,6 +9,15 @@ use App\Entity\Leagues;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AuthController extends AbstractController
 {
+
+  public function testFunction(Request $request){
+    $arr['_username'] = $request->query->get('_username');
+    $arr['_password'] = $request->query->get('_password');
+    $arr['method'] = $request->getMethod();
+    $teams = $this->getDoctrine()->getRepository(Teams::class)->getTeamsByLeagueId(1);
+    return json_encode($arr);
+  }
+
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
 
@@ -18,7 +27,7 @@ class AuthController extends AbstractController
       $user = $this->getDoctrine()->getRepository(User::class)->createUser($username, $password, $encoder);
 
       return new Response(sprintf('User %s successfully created', $user->getUsername()));
-    }
+    }    
 
     public function api($leagueId, Request $request)
     {
@@ -33,7 +42,6 @@ class AuthController extends AbstractController
         } else {
           return new Response(json_encode(array("response" => "Insufficient data")), 401);
         }
-
         if($request->getMethod() === "GET") {
             $teams = $this->getDoctrine()->getRepository(Teams::class)->getTeamsByLeagueId($leagueId);
             if(empty($teams)){
